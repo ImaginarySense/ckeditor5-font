@@ -38,8 +38,9 @@ export default class ColorTableView extends View {
 	 * @param {Number} config.columns Number of columns in the color grid.
 	 * Also determines how many recent color will be displayed.
 	 * @param {String} config.removeButtonLabel A label of a button responsible for removing the color.
+	 * @param {String} config.recentlyUsedLabel A label for a section with recently used color inside dropdown.
 	 */
-	constructor( locale, { colors, columns, removeButtonLabel } ) {
+	constructor( locale, { colors, columns, removeButtonLabel, recentlyUsedLabel } ) {
 		super( locale );
 
 		/**
@@ -86,6 +87,13 @@ export default class ColorTableView extends View {
 		 * @type {String}
 		 */
 		this.removeButtonLabel = removeButtonLabel;
+
+		/**
+		 * A label for a section with recently used color inside dropdown.
+		 *
+		 * @type {String}
+		 */
+		this.recentlyUsedLabel = recentlyUsedLabel;
 
 		/**
 		 * The number of columns in color grid. Also determines the number of recent color to be displayed.
@@ -185,7 +193,7 @@ export default class ColorTableView extends View {
 	 * @private
 	 */
 	recentlyUsed() {
-		const recentViews = new ColorGridView( this.locale, { columns: this.columns } );
+		const recentViews = new ColorGridView( this.locale, { columns: this.columns, recentlyUsedLabel: this.recentlyUsedLabel } );
 
 		recentViews.bind( 'selectedColor' ).to( this );
 

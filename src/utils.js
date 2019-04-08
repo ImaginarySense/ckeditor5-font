@@ -109,11 +109,12 @@ export function normalizeColorOptions( options ) {
  * @param {Array.<module:ui/colorgrid/colorgrid~ColorDefinition>} config.colors An array with definitions
  * representing colors to be displayed in the color table.
  * @param {String} config.removeButtonLabel A label of a button responsible for removing the color.
+ * @param {String} config.recentlyUsedLabel A label for a section with recently used color inside dropdown.
  * @returns {module:font/ui/colortableview~ColorTableView} The new color table view.
  */
-export function addColorTableToDropdown( { dropdownView, colors, columns, removeButtonLabel } ) {
+export function addColorTableToDropdown( { dropdownView, colors, columns, removeButtonLabel, recentlyUsedLabel } ) {
 	const locale = dropdownView.locale;
-	const colorTableView = new ColorTableView( locale, { colors, columns, removeButtonLabel } );
+	const colorTableView = new ColorTableView( locale, { colors, columns, removeButtonLabel, recentlyUsedLabel } );
 
 	dropdownView.colorTableView = colorTableView;
 	dropdownView.panelView.children.add( colorTableView );
