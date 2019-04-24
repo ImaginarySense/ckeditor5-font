@@ -90,7 +90,7 @@ export default class FontSizeUI extends Plugin {
 			Huge: t( 'Huge' )
 		};
 
-		const options = normalizeOptions( editor.config.get( FONT_SIZE ).options );
+		const options = normalizeOptions( editor.config.get( FONT_SIZE ).options, editor.config.get( FONT_SIZE ).unit );
 
 		return options.map( option => {
 			const title = localizedTitles[ option.title ];

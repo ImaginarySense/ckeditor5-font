@@ -14,10 +14,12 @@
  * @param {Array.<String|Number|Object>} configuredOptions An array of options taken from the configuration.
  * @returns {Array.<module:font/fontsize~FontSizeOption>}
  */
-export function normalizeOptions( configuredOptions ) {
+export function normalizeOptions( configuredOptions, configuredUnit ) {
 	// Convert options to objects.
 	return configuredOptions
-		.map( getOptionDefinition )
+		.map( getOptionDefinition, {
+			unit: configuredUnit
+		} )
 		// Filter out undefined values that `getOptionDefinition` might return.
 		.filter( option => !!option );
 }
@@ -86,32 +88,43 @@ function getOptionDefinition( option ) {
 		};
 	}
 
-	// At this stage we probably have numerical value to generate a preset so parse it's value.
-	const sizePreset = parseFloat( option );
+	// Default unit. 'px' will be used when no other value is specified.
+	const unitPreset = ( this.unit === undefined ) ? 'px' : this.unit;
 
-	// Discard any faulty values.
+	// At this stage we probably have numerical value to generate a preset so parse it's value.
+	const sizeLabel = option;
+	const sizePreset = parseFloat( sizeLabel );
+
+	// Discard any faulty size values.
 	if ( isNaN( sizePreset ) ) {
 		return;
 	}
 
+	// Discard any faulty unit values.
+	const allowedUnits = [ 'px', 'pt', 'pc', 'cm', 'mm', 'in', 'em', 'ch', 'rem', 'ex', 'vw', 'vh', 'vmin', 'vmax', '%' ];
+	if ( allowedUnits.indexOf( unitPreset ) === -1 ) {
+		return;
+	}
+
 	// Return font size definition from size value.
-	return generatePixelPreset( sizePreset );
+	return generatePreset( sizeLabel, sizePreset, unitPreset );
 }
 
-// Creates a predefined preset for pixel size.
+// Creates a predefined preset for specified unit size.
 //
-// @param {Number} size Font size in pixels.
+// @param {String|Number, Number, String} label, Font size and unit.
 // @returns {module:font/fontsize~FontSizeOption}
-function generatePixelPreset( size ) {
-	const sizeName = String( size );
+function generatePreset( label, size, unit ) {
+	const sizeName = String( label );
 
 	return {
 		title: sizeName,
 		model: size,
+		unit: unit,
 		view: {
 			name: 'span',
 			styles: {
-				'font-size': `${ size }px`
+				'font-size': `${ size }${ unit }`
 			},
 			priority: 5
 		}

@@ -45,7 +45,7 @@ export default class FontSizeEditing extends Plugin {
 		} );
 
 		// Define view to model conversion.
-		const options = normalizeOptions( this.editor.config.get( 'fontSize.options' ) ).filter( item => item.model );
+		const options = normalizeOptions( this.editor.config.get( 'fontSize.options' ), this.editor.config.get( 'fontSize.unit' ) ).filter( item => item.model );
 		const definition = buildDefinition( FONT_SIZE, options );
 
 		// Set-up the two-way conversion.
